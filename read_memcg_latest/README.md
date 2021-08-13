@@ -9,5 +9,5 @@
 * **收集容器中的所有进程**： 因为我们已经得到其中一个shim进程的pid，那么容器中所有进程都是shim进程的子进程，只需要递归遍历shim进程
 的所有子进程即可。(还有一种思路就是，通过是否处于同一pid_namespace来判断是否在同一容器中)
 
-* **找到容器进程所属的memory cgroup并纪录其cgroup path (cgroup path类似于`lssubsys -m`输出的信息)**: 这里的实现参考了内核中memcg和cgroup namespace的源码[proc_cgroup_show](https://elixir.bootlin.com/linux/v5.10/source/kernel/cgroup/cgroup.c#L5813)，
+* **找到容器进程所属的memory cgroup并纪录其cgroup path (cgroup path类似于`lssubsys -m`输出的信息)**: 这里的实现参考了内核中memcg和cgroup namespace的源码[proc_cgroup_show](https://elixir.bootlin.com/linux/v5.10/source/kernel/cgroup/cgroup.c#L5813)。从task_struct到mem cgroup需要经过`css_set`和`cgroup_subsys_state`，然后再通过`container_of`获得`mem_cgroup`.不过后来发现内核有相应的函数可以直接从task_struct获得mem_cgroup，某些static inline函数需要通过`kallsyms_lookup_name`找到符号再调用。
 
