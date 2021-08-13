@@ -1,2 +1,2 @@
 ## memcg_relative
-本仓库包括了两个与memory cgroup相关的内核模块，分别是dockermeminfo和read_memcg
+本仓库包括了两个与memory cgroup相关的内核模块，分别是dockermeminfo和read_memcg，具体介绍在文件夹中md。
